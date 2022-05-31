@@ -1,5 +1,5 @@
 def DOCKER_HOST = 'tcp://127.0.0.1:2375'
-def DOCKER_REGISTRY = '172.31.5.2:5000'
+def DOCKER_REGISTRY = '172.31.5.2:8000'
 
 def VERSION_MAJOR = '1'
 def VERSION_MINOR = '2'
@@ -12,6 +12,7 @@ def TAG_PATCH = "${TAG_MINOR}.${VERSION_PATCH}"
 def TAG_BUILD = "${TAG_PATCH}-b${VERSION_BUILD}"
 
 def IMAGE_NAME = 'alpine-cmake'
+def dockerImage = null
 
 node {
     stage('Checkout') {
@@ -19,16 +20,15 @@ node {
     }
     docker.withServer(DOCKER_HOST) {
         docker.withRegistry("http://$DOCKER_REGISTRY") {
-            def image = null
-            stage('Build') {
-                image = docker.build(IMAGE_NAME, "--build-arg http_proxy=$env.HTTP_PROXY --build-arg https_proxy=$env.HTTPS_PROXY .")
+            stage('Build Docker') {
+                dockerImage = docker.build(IMAGE_NAME, "--build-arg http_proxy=$env.HTTP_PROXY --build-arg https_proxy=$env.HTTPS_PROXY .")
             }
-            stage('Publish') {
-                image.push(TAG_BUILD)
-                image.push(TAG_PATCH)
-                image.push(TAG_MINOR)
-                image.push(TAG_MAJOR)
-                image.push('latest')
+            stage('Publish Docker') {
+                dockerImage.push(TAG_BUILD)
+                dockerImage.push(TAG_PATCH)
+                dockerImage.push(TAG_MINOR)
+                dockerImage.push(TAG_MAJOR)
+                dockerImage.push('latest')
             }
         }
     }

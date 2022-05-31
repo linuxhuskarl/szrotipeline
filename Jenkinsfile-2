@@ -1,5 +1,5 @@
 def DOCKER_HOST = 'tcp://127.0.0.1:2375'
-def DOCKER_REGISTRY = '172.31.5.2:5000'
+def DOCKER_REGISTRY = '172.31.5.2:8000'
 
 def VERSION_MAJOR = '1'
 def VERSION_MINOR = '2'
@@ -15,7 +15,9 @@ def IMAGE_NAME = 'alpine-cmake'
 def dockerImage = null
 
 node {
-    stage('Checkout') { checkout scm }
+    stage('Checkout') {
+        checkout scm
+    }
     docker.withServer(DOCKER_HOST) {
         docker.withRegistry("http://$DOCKER_REGISTRY") {
             stage('Build Docker') {
@@ -37,7 +39,7 @@ dockerNode ("$DOCKER_REGISTRY/$IMAGE_NAME:$TAG_BUILD") {
             sh 'cmake --build .'
         }
     }
-    stage('Test') {
+    stage('Test App') {
         sh './build/hello'
     }
     stage('Publish App') {
