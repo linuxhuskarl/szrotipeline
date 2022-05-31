@@ -30,7 +30,13 @@ node {
 
 dockerNode ("$DOCKER_REGISTRY/$IMAGE_NAME:$TAG_BUILD") {
     stage('Build App') {
-        sh 'cmake --version'
+        dir('build') {
+            sh 'cmake ..'
+            sh 'cmake --build .'
+        }
+    }
+    stage('Test') {
+        sh './build/hello'
     }
     stage('Publish App') {
         sh 'echo Publikujemy'
