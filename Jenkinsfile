@@ -5,7 +5,7 @@ node {
     docker.withServer('tcp://127.0.0.1:2375') {
         def image = null
         stage('Build') {
-            image = docker.build('alpine-cmake')
+            image = docker.build('alpine-cmake', "--build-arg http_proxy=$HTTP_PROXY --build-arg https_proxy=$HTTPS_PROXY .")
         }
         stage('Test') { 
             image.inside {
