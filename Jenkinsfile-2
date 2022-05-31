@@ -2,7 +2,7 @@ def DOCKER_HOST = 'tcp://127.0.0.1:2375'
 def DOCKER_REGISTRY = '172.31.5.2:5000'
 
 def VERSION_MAJOR = '1'
-def VERSION_MINOR = '1'
+def VERSION_MINOR = '2'
 def VERSION_PATCH = '0'
 def VERSION_BUILD = "${BUILD_NUMBER}"
 
@@ -26,10 +26,12 @@ node {
             }
         }
     }
+    stash 'ws'
 }
 
 dockerNode ("$DOCKER_REGISTRY/$IMAGE_NAME:$TAG_BUILD") {
     stage('Build App') {
+        unstash 'ws'
         dir('build') {
             sh 'cmake ..'
             sh 'cmake --build .'
