@@ -24,15 +24,14 @@ node {
                 dockerImage = docker.build(IMAGE_NAME, "--build-arg http_proxy=$env.HTTP_PROXY --build-arg https_proxy=$env.HTTPS_PROXY .")
             }
             stage('Publish Docker') {
-                //dockerImage.push(TAG_BUILD)
-                echo 'Nic'
+                dockerImage.push(TAG_BUILD)
             }
         }
     }
     stash 'ws'
 }
 
-dockerNode ("$IMAGE_NAME:$TAG_BUILD") {
+dockerNode ("$DOCKER_REGISTRY/$IMAGE_NAME:$TAG_BUILD") {
     stage('Build App') {
         unstash 'ws'
         dir('build') {

@@ -1,21 +1,21 @@
 pipeline {
     agent {
-        docker {
-            dockerfile true
-        }
+        label: 'docker-agent'
     }
     stages {
-        stage('Build App') {
-            unstash 'ws'
+        stage('Checkout') {
+            checkout scm
+        }
+        stage('Build') {
             dir('build') {
                 sh 'cmake ..'
                 sh 'cmake --build .'
             }
         }
-        stage('Test App') {
+        stage('Test') {
             sh './build/hello'
         }
-        stage('Publish App') {
+        stage('Publish') {
             sh 'echo Publikujemy'
         }
     }
