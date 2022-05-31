@@ -8,8 +8,8 @@ node {
             image = docker.build('alpine-cmake', "--build-arg http_proxy=$HTTP_PROXY --build-arg https_proxy=$HTTPS_PROXY .")
         }
         stage('Test') { 
-            image.inside {
-                sh 'cmake --version'
+            def container = image.withRun('-t', 'cmake --version') {
+                echo 'hmm!'
             }
         }
         stage('Publish') {
