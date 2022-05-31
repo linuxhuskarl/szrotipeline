@@ -1,0 +1,22 @@
+pipeline {
+    agent {
+        docker {
+            dockerfile true
+        }
+    }
+    stages {
+        stage('Build App') {
+            unstash 'ws'
+            dir('build') {
+                sh 'cmake ..'
+                sh 'cmake --build .'
+            }
+        }
+        stage('Test App') {
+            sh './build/hello'
+        }
+        stage('Publish App') {
+            sh 'echo Publikujemy'
+        }
+    }
+}
