@@ -1,4 +1,7 @@
 node {
+    stage('Checkout') {
+        checkout scm
+    }
     docker.withServer('tcp://127.0.0.1:2375') {
         def image = null
         stage('Build') {
