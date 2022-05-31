@@ -8,12 +8,12 @@ node {
             image = docker.build('alpine-cmake', "--build-arg http_proxy=$HTTP_PROXY --build-arg https_proxy=$HTTPS_PROXY .")
         }
         stage('Test') { 
-            def container = image.withRun('-t', 'cmake --version') {
-                echo 'hmm!'
-            }
+            def container = image.run('-t', 'cmake --version')
+            sh "docker logs $container.id"
+            container.stop()
         }
         stage('Publish') {
-            withRegistry('http://172.31.5.2:5000') {
+            docker.withRegistry('http://172.31.5.2:5000') {
                 image.push("0.1.0-b$BUILD_NUMBER")
             }
         }
