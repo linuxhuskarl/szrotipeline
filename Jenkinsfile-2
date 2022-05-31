@@ -23,7 +23,7 @@ node {
                 dockerImage.tag(TAG_BUILD)
             }
             stage('Publish Docker') {
-                image.push()
+                dockerImage.push()
             }
         }
     }
