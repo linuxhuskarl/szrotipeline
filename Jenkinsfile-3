@@ -4,19 +4,27 @@ pipeline {
     }
     stages {
         stage('Checkout') {
-            checkout scm
+            steps {
+                checkout scm
+            }
         }
         stage('Build') {
-            dir('build') {
-                sh 'cmake ..'
-                sh 'cmake --build .'
+            steps {
+                dir('build') {
+                    sh 'cmake ..'
+                    sh 'cmake --build .'
+                }
             }
         }
         stage('Test') {
-            sh './build/hello'
+            steps {
+                sh './build/hello'
+            }
         }
         stage('Publish') {
-            sh 'echo Publikujemy'
+            steps {
+                sh 'echo Publikujemy'
+            }
         }
     }
 }
