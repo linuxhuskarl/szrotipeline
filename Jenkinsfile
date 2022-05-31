@@ -20,7 +20,7 @@ node {
     docker.withServer(DOCKER_HOST) {
         def image = null
         stage('Build') {
-            image = docker.build(IMAGE_NAME, "--build-arg http_proxy=$HTTP_PROXY --build-arg https_proxy=$HTTPS_PROXY .")
+            image = docker.build(IMAGE_NAME, "--build-arg http_proxy=$env.HTTP_PROXY --build-arg https_proxy=$env.HTTPS_PROXY .")
         }
         stage('Publish') {
             docker.withRegistry(DOCKER_REGISTRY) {
