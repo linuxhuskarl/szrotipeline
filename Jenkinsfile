@@ -5,7 +5,7 @@ node {
     docker.withServer('tcp://127.0.0.1:2375') {
         def image = null
         stage('Build') {
-            image = docker.build()
+            image = docker.build('alpine-cmake')
         }
         stage('Test') { 
             image.inside {
