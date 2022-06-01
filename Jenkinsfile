@@ -1,4 +1,4 @@
-def DOCKER_HOST = 'tcp://127.0.0.1:2375'
+def DOCKER_HOST = 'tcp://172.31.5.2:2376'
 def DOCKER_REGISTRY = '172.31.5.2:8000'
 
 def VERSION_MAJOR = '1'

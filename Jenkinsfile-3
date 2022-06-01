@@ -2,9 +2,7 @@ env.DOCKER_HOST = 'tcp://172.31.5.2:2376'
 
 pipeline {
     agent {
-        dockerfile {
-            additionalBuildArgs '--build-arg http_proxy=$env.HTTP_PROXY --build-arg https_proxy=$env.HTTPS_PROXY'
-        }
+        label 'docker-alpine-cmake'
     }
     stages {
         stage('Build') {
